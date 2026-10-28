@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arada Bet - Sports Betting Platform</title>
+  <style>
+    :root {
+      --bg-dark: #0b1426;
+      --panel-bg: #111e38;
+      --accent-gold: #f3ba2f;
+      --accent-blue: #2563eb;
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+      --border-color: #1e293b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-white); padding-bottom: 70px; }
+
+    .header { background-color: var(--panel-bg); display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .menu-btn { background: none; border: none; color: var(--text-white); font-size: 22px; cursor: pointer; }
+    .logo { font-size: 20px; font-weight: bold; color: var(--accent-gold); display: flex; align-items: center; gap: 5px; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .wallet-box { background: #1e293b; padding: 4px 10px; border-radius: 6px; font-size: 12px; text-align: right; }
+    .wallet-box .balance { color: var(--accent-gold); font-weight: bold; }
+    .deposit-btn { background-color: var(--accent-blue); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; }
+
+    .sub-nav { display: flex; background: #0f172a; overflow-x: auto; padding: 8px 10px; gap: 8px; border-bottom: 1px solid var(--border-color); }
+    .sub-tab { background: #1e293b; color: var(--text-muted); border: none; padding: 6px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; }
+    .sub-tab.active { background: var(--accent-blue); color: white; font-weight: bold; }
+
+    .container { padding: 12px; max-width: 600px; margin: 0 auto; }
+    
+    .promo-banner { background: linear-gradient(135deg, #1e40af, #3b82f6); border-radius: 10px; padding: 15px; text-align: center; margin-bottom: 15px; }
+    .promo-banner h2 { font-size: 18px; color: var(--accent-gold); margin-bottom: 5px; }
+    .promo-banner p { font-size: 13px; color: #e2e8f0; }
+
+    .match-card { background-color: var(--panel-bg); border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--border-color); overflow: hidden; }
+    .match-header { background: #0f172a; padding: 6px 12px; font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; }
+    .match-teams { padding: 10px 12px; font-size: 14px; font-weight: bold; text-align: center; border-bottom: 1px solid var(--border-color); }
+    
+    .odds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px; }
+    .odd-btn { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 8px; color: white; text-align: center; cursor: pointer; transition: 0.2s; }
+    .odd-btn:hover { background: var(--accent-blue); }
+    .odd-btn .type { font-size: 11px; color: var(--text-muted); display: block; }
+    .odd-btn .val { font-size: 14px; font-weight: bold; color: var(--accent-gold); }
+
+    .deposit-section { background: var(--panel-bg); border-radius: 8px; padding: 15px; margin-top: 20px; border: 1px solid var(--border-color); }
+    .deposit-section h3 { font-size: 16px; margin-bottom: 10px; color: var(--accent-gold); }
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .form-group input { width: 100%; padding: 10px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 6px; color: white; font-size: 14px; }
+    .submit-deposit { width: 100%; background: #16a34a; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #090d16; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid var(--border-color); z-index: 100; }
+    .nav-item { background: none; border: none; color: var(--text-muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+    .nav-item.active { color: var(--accent-gold); }
+    .nav-item span { font-size: 18px; }
+
+    .betslip-drawer { background: #111e38; border-top: 2px solid var(--accent-gold); padding: 12px; margin-top: 20px; border-radius: 8px; }
+    .place-bet-btn { width: 100%; background: var(--accent-gold); color: #000; border: none; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left">
+      <button class="menu-btn">☰</button>
+      <div class="logo">⚽ aradabet</div>
+    </div>
+    <div class="header-right">
+      <div class="wallet-box">
+        <div>ID: <span id="user-id">153279</span></div>
+        <div class="balance" id="user-balance">7.48 ETB</div>
+      </div>
+      <button class="deposit-btn" onclick="scrollToDeposit()">DEPOSIT</button>
+    </div>
+  </div>
+
+  <div class="sub-nav">
+    <button class="sub-tab active">UPCOMING</button>
+    <button class="sub-tab">EXPRESS</button>
+    <button class="sub-tab">TOP SPORTS</button>
+  </div>
+
+  <div class="container">
+    <div class="promo-banner">
+      <h2>MULTI BET BONUS</h2>
+      <p>BOOST YOUR WINNINGS UP TO 500%</p>
+    </div>
+
+    <h3>🏆 የቀጥታ እና የሚመጡ ጨዋታዎች (Live & Upcoming)</h3>
+    <div id="matches-container" style="margin-top: 10px;">
+      <p style="text-align: center; color: var(--text-muted);">ጨዋታዎች እየተጫኑ ነው...</p>
+    </div>
+
+    <div class="betslip-drawer">
+      <h3>🎟️ የውርርድ ኩፖን (Bet Slip)</h3>
+      <div id="betslip-items" style="margin: 8px 0; font-size: 13px; color: var(--text-muted);">
+        ምንም ውርርድ አልተመረጠም።
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 8px;">
+        <span>አጠቃላይ ኦድ (Total Odds):</span>
+        <strong id="total-odds" style="color: var(--accent-gold);">0.00</strong>
+      </div>
+      <div class="form-group" style="margin-top: 8px;">
+        <label>የውርርድ መጠን (Stake in ETB):</label>
+        <input type="number" id="stake-amount" value="50" min="10">
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 5px;">
+        <span>ሊያሸንፉ የሚችሉት (Payout):</span>
+        <strong id="potential-payout" style="color: #22c55e;">0.00 ETB</strong>
+      </div>
+      <button class="place-bet-btn" onclick="placeBet()">ውርርድ ያስቀምጡ (Place Bet)</button>
+    </div>
+
+    <div class="deposit-section" id="deposit-section">
+      <h3>📲 Telebirr P2P ዴፖዚት (ባላንስ መሙያ)</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+        ገንዘቡን ከታች ባለው የቴሌብር ቁጥር ያስተላልፉ:<br>
+        <strong>ቴሌብር ቁጥር: 0911223344 (አራዳ ቤት ኤጀንሲ)</strong>
+      </p>
+      <div class="form-group">
+        <label>የላኩት ስልክ ቁጥር:</label>
+        <input type="text" id="sender-phone" placeholder="09xxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>የተላከው ገንዘብ (ETB):</label>
+        <input type="number" id="deposit-amount" placeholder="100" min="20">
+      </div>
+      <div class="form-group">
+        <label>የ Telebirr ፕላትፎርም TxID:</label>
+        <input type="text" id="tx-id" placeholder="FT26XXXXXXXX">
+      </div>
+      <button class="submit-deposit" onclick="submitDeposit()">ክፍያ አረጋግጥ (Confirm Deposit)</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-item active"><span>⚽</span>SPORTS</button>
+    <button class="nav-item"><span>🎲</span>GAMES</button>
+    <button class="nav-item"><span>🔥</span>PROMO</button>
+    <button class="nav-item"><span>✈️</span>AVIATOR</button>
+    <button class="nav-item"><span>💬</span>CHAT</button>
+  </div>
+
+  <script>
+    const currentUserId = "user_001";
+    let betSlipItems = [];
+
+    async function fetchBalance() {
+      try {
+        const res = await fetch(`/api/wallet/${currentUserId}`);
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('user-balance').innerText = data.balance.toFixed(2) + ' ETB';
+        }
+      } catch (err) { console.error(err); }
+    }
+
+    async function loadMatches() {
+      const container = document.getElementById('matches-container');
+      try {
+        const res = await fetch('/api/sports/fixtures');
+        const data = await res.json();
+        if (data.success && data.matches.length > 0) {
+          container.innerHTML = '';
+          data.matches.forEach(match => {
+            const card = document.createElement('div');
+            card.className = 'match-card';
+            card.innerHTML = `
+              <div class="match-header">
+                <span>🏆 ${match.league}</span>
+                <span>📅 ${match.date} ${match.time}</span>
+              </div>
+              <div class="match-teams">${match.homeTeam} VS ${match.awayTeam}</div>
+              <div class="odds-grid">
+                <button class="odd-btn" onclick="addToSlip('${match.id}', '${match.homeTeam} - ${match.awayTeam}', '1', ${match.odds.home})">
+                  <span class="type">1</span>
+                  <span class="val">${match.odds.home}</span>
+                </button>
+                <button class="odd-btn" onclick="addToSlip('${match.id}', '${match.homeTeam} - ${match.awayTeam}', 'X', ${match.odds.draw})">
+                  <span class="type">X</span>
+                  <span class="val">${match.odds.draw}</span>
+                </button>
+                <button class="odd-btn" onclick="addToSlip('${match.id}', '${match.homeTeam} - ${match.awayTeam}', '2', ${match.odds.away})">
+                  <span class="type">2</span>
+                  <span class="val">${match.odds.away}</span>
+                </button>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">ምንም ጨዋታዎች አልተገኙም።</p>';
+        }
+      } catch (e) {
+        container.innerHTML = '<p style="text-align:center; color:#ef4444;">መረጃ መጫን አልተቻለም።</p>';
+      }
+    }
+
+    function addToSlip(matchId, matchName, type, odds) {
+      betSlipItems = betSlipItems.filter(i => i.matchId !== matchId);
+      betSlipItems.push({ matchId, matchName, type, odds: parseFloat(odds) });
+      renderSlip();
+    }
+
+    function renderSlip() {
+      const slipContainer = document.getElementById('betslip-items');
+      const totalOddsEl = document.getElementById('total-odds');
+      const payoutEl = document.getElementById('potential-payout');
+      const stakeVal = parseFloat(document.getElementById('stake-amount').value) || 0;
+
+      if (betSlipItems.length === 0) {
+        slipContainer.innerHTML = 'ምንም ውርርድ አልተመረጠም።';
+        totalOddsEl.innerText = '0.00';
+        payoutEl.innerText = '0.00 ETB';
+        return;
+      }
+
+      let totalOdds = betSlipItems.reduce((acc, i) => acc * i.odds, 1);
+      slipContainer.innerHTML = betSlipItems.map(i => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; border-bottom:1px solid #1e293b; padding-bottom:4px;">
+          <span>${i.matchName} (${i.type}: <strong>${i.odds}</strong>)</span>
+          <span style="color:#ef4444; cursor:pointer;" onclick="removeFromSlip('${i.matchId}')">✕</span>
+        </div>
+      `).join('');
+
+      totalOddsEl.innerText = totalOdds.toFixed(2);
+      payoutEl.innerText = (stakeVal * totalOdds).toFixed(2) + ' ETB';
+    }
+
+    function removeFromSlip(matchId) {
+      betSlipItems = betSlipItems.filter(i => i.matchId !== matchId);
+      renderSlip();
+    }
+
+    document.getElementById('stake-amount').addEventListener('input', renderSlip);
+
+    async function placeBet() {
+      if (betSlipItems.length === 0) { alert('እባክዎ መጀመሪያ ጨዋታ ይምረጡ!'); return; }
+      const stake = parseFloat(document.getElementById('stake-amount').value);
+      const totalOdds = parseFloat(document.getElementById('total-odds').innerText);
+
+      try {
+        const res = await fetch('/api/bet/place', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: currentUserId, items: betSlipItems, stake, totalOdds })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`✅ ውርርዱ ተሳክቷል!\nየቲኬት ቁጥር: ${data.ticketId}\nሊያሸንፉ የሚችሉት: ${data.potentialPayout} ETB\nቀሪ ባላንስ: ${data.newBalance.toFixed(2)} ETB`);
+          betSlipItems = [];
+          renderSlip();
+          fetchBalance();
+        } else {
+          alert('❌ ' + data.message);
+        }
+      } catch (err) { alert('የኔትወርክ ስህተት አጋጥሟል!'); }
+    }
+
+    async function submitDeposit() {
+      const amount = document.getElementById('deposit-amount').value;
+      const txId = document.getElementById('tx-id').value;
+      const senderPhone = document.getElementById('sender-phone').value;
+
+      if (!amount || !txId || !senderPhone) { alert('እባክዎ ሁሉንም መስኮች ይሙሉ!'); return; }
+
+      try {
+        const res = await fetch('/api/wallet/deposit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: currentUserId, amount, txId, senderPhone })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`✅ ${data.message}\nአዲሱ ባላንስዎ: ${data.newBalance} ETB`);
+          document.getElementById('deposit-amount').value = '';
+          document.getElementById('tx-id').value = '';
+          document.getElementById('sender-phone').value = '';
+          fetchBalance();
+        } else {
+          alert('❌ ዴፖዚት አልተሳካም');
+        }
+      } catch (err) { alert('የኔትወርክ ስህተት!'); }
+    }
+
+    function scrollToDeposit() {
+      document.getElementById('deposit-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchBalance();
+      loadMatches();
+    });
+  </script>
+</body>
+</html>
